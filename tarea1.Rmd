@@ -1,0 +1,54 @@
+---
+title: "Tarea 1"
+author: "Miguel Lerdo de Tejada"
+date: "28/1/2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = T)
+```
+
+```{r packages, include=F}
+library(arules)
+library(dplyr)
+```
+
+```{r data, include=F}
+cocinas <- read.csv("https://raw.githubusercontent.com/MikeLdT/metodos-analiticos-mcd-2022/main/metodos-analiticos/datos/recetas/srep00196-s3.csv")
+```
+
+Escojo la cocina latinoamericana:
+
+```{r}
+pars <- list(maxlen = 5, target = "frequent itemsets")
+ap <- cocinas %>% filter(region=="LatinAmerican") %>% apriori(parameter = pars)
+length(ap)
+```
+
+Veamos algunos conjuntos frecuentes de tamaño 1
+```{r}
+ap_1 <- subset(ap, size(ap) == 1) 
+length(ap_1)
+```
+
+```{r}
+sort(ap_1, by = "support") |> DATAFRAME() |> head(10) 
+```
+
+Algunas de tamaño 2 y 3
+
+```{r}
+ap_2 <- subset(ap, size(ap) == 2)
+length(ap_2)
+```
+```{r}
+sort(ap_2, by = "support") |> head(10) |> DATAFRAME()
+```
+```{r}
+ap_3 <- subset(ap, size(ap) == 3)
+length(ap_3)
+```
+sort(ap_3, by="support") |> head() |> DATAFRAME()
+
+```
